@@ -1,0 +1,55 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AccessToken {
+  access_token: String!
+}
+
+type Course {
+  author: User!
+  description: String!
+  headline: String!
+  id: Float!
+  isPaid: Boolean!
+  name: String!
+  previewUrl: String!
+  price: Float!
+}
+
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+}
+
+type Mutation {
+  createUser(createUserData: CreateUserInput!): User!
+  deleteCourse(id: Float!): Course!
+  deleteUser(id: Float!): User!
+  login(email: String!, password: String!): AccessToken!
+  updateUser(id: Float!, updateUserData: UpdateUserInput!): User!
+}
+
+type Query {
+  course(id: Float!): Course!
+  courses: [Course!]!
+  me: User!
+  user(id: Float!): User!
+  users: [User!]!
+}
+
+input UpdateUserInput {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+}
+
+type User {
+  email: String!
+  firstName: String!
+  id: Float!
+  lastName: String!
+}
