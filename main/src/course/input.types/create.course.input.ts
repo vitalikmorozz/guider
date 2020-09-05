@@ -1,28 +1,29 @@
 import { InputType, Field } from '@nestjs/graphql';
+import { IsString, IsBoolean, IsNumber } from 'class-validator';
 
 @InputType()
-export class Course {
-    @Field()
-    id: number;
-
+export class CreateCourseInput {
+    @IsString()
     @Field()
     name: string;
 
+    @IsString()
     @Field()
     headline: string;
 
+    @IsString()
     @Field()
     description: string;
 
+    @IsBoolean()
     @Field()
     isPaid: boolean;
 
+    @IsNumber()
     @Field()
     price: number;
 
+    @IsString()
     @Field()
     previewUrl: string;
-
-    @Field()
-    author_id: number;
 }

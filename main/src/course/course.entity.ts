@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { ObjectType, Field } from "@nestjs/graphql";
-import { User } from "src/user/user.entity";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { ObjectType, Field } from '@nestjs/graphql';
+import { User } from 'src/user/user.entity';
 
 @Entity()
 @ObjectType()
@@ -34,6 +34,10 @@ export class Course {
     previewUrl: string;
 
     @Field(() => User)
-    @ManyToOne(() => User, { cascade: true })
+    @ManyToOne(
+        () => User,
+        user => user.createdCourses,
+        { cascade: true },
+    )
     author: User;
 }
