@@ -13,11 +13,13 @@ export class UserService {
     ) {}
 
     async findAll(): Promise<User[]> {
-        return this.userRepository.find();
+        return this.userRepository.find({ relations: ['createdCourses'] });
     }
 
     async findOne(id: number): Promise<User> {
-        return this.userRepository.findOne(id);
+        return this.userRepository.findOne(id, {
+            relations: ['createdCourses'],
+        });
     }
 
     async findOneByEmail(email: string): Promise<User> {
@@ -25,21 +27,28 @@ export class UserService {
     }
 
     async create(createUserData: CreateUserInput): Promise<User> {
-        let newUser = new User();
-        newUser = { ...createUserData };
-        return this.userRepository.save(newUser);
+        let user = new User();
+        user.firstName = createUserData.firstName;
+        user.lastName = createUserData.lastName;
+        user.email = createUserData.email;
+        user.password = createUserData.password;
+        return user;
+    }
+
+    async save(user: User): Promise<User> {
+        return this.userRepository.save(user);
     }
 
     async updateOne(
         id: number,
         updateUserData: UpdateUserInput,
     ): Promise<User> {
-        await this.userRepository.save({ id, ...updateUserData });
-        return this.userRepository.findOne(id);
+        await this.save({ id, ...updateUserData });
+        return this.findOne(id);
     }
 
     async deleteOne(id: number): Promise<User> {
-        let user = await this.userRepository.findOne(id);
+        let user = await this.findOne(id);
         if (!user) throw new NotFoundException('This user does not exists');
         await this.userRepository.delete(id);
         return user;

@@ -1,5 +1,6 @@
-import { InputType, Field } from "@nestjs/graphql";
+import { InputType, Field } from '@nestjs/graphql';
 import { IsString, IsEmail, IsOptional } from 'class-validator';
+import { Course } from 'src/course/course.entity';
 
 @InputType()
 export class UpdateUserInput {
@@ -25,4 +26,6 @@ export class UpdateUserInput {
     @IsOptional()
     @Field({ nullable: true })
     password: string;
+
+    createdCourses: Course[];
 }

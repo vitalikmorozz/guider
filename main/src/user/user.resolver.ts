@@ -13,7 +13,6 @@ export class UserResolver {
     constructor(private readonly userService: UserService) {}
 
     @Query(() => [User], { name: 'users' })
-    @UseGuards(GqlAuthGuard)
     async getAll() {
         return this.userService.findAll();
     }
@@ -31,7 +30,8 @@ export class UserResolver {
 
     @Mutation(() => User, { name: 'createUser' })
     async createUser(@Args('createUserData') createUserData: CreateUserInput) {
-        return this.userService.create(createUserData);
+        let user = await this.userService.create(createUserData);
+        return this.userService.save(user);
     }
 
     @Mutation(() => User, { name: 'updateUser' })
