@@ -6,6 +6,11 @@ type AccessToken {
   access_token: String!
 }
 
+enum AllowedTypes {
+  document
+  video
+}
+
 type Course {
   author: User!
   description: String!
@@ -15,6 +20,38 @@ type Course {
   name: String!
   previewUrl: String!
   price: Float!
+  sections: [CourseSection!]!
+}
+
+type CourseSection {
+  course: Course!
+  id: Float!
+  materials: [SectionMaterial!]!
+  name: String!
+  sortNumber: Float!
+}
+
+input CreateCourseInput {
+  description: String!
+  headline: String!
+  isPaid: Boolean!
+  name: String!
+  previewUrl: String!
+  price: Float!
+}
+
+input CreateCourseSectionType {
+  courseId: Float!
+  name: String!
+  sortNumber: Float!
+}
+
+input CreateSectionMaterialType {
+  name: String!
+  sectionId: Float!
+  sortNumber: Float!
+  type: AllowedTypes!
+  url: String!
 }
 
 input CreateUserInput {
@@ -25,19 +62,62 @@ input CreateUserInput {
 }
 
 type Mutation {
+  createCourse(createCourseData: CreateCourseInput!): Course!
+  createCourseSection(createCourseSectionData: CreateCourseSectionType!): CourseSection!
+  createSectionMaterial(createSectionMaterialData: CreateSectionMaterialType!): SectionMaterial!
   createUser(createUserData: CreateUserInput!): User!
   deleteCourse(id: Float!): Course!
+  deleteCourseSection(id: Float!): CourseSection!
+  deleteSectionMaterial(id: Float!): SectionMaterial!
   deleteUser(id: Float!): User!
   login(email: String!, password: String!): AccessToken!
+  register(user: CreateUserInput!): AccessToken!
+  updateCourse(id: Float!, updateCourseData: UpdateCourseType!): Course!
+  updateCourseSection(id: Float!, updateCourseSectionData: UpdateCourseSectionType!): CourseSection!
+  updateSectionMaterial(id: Float!, updateSectionMaterialData: UpdateSectionMaterialType!): SectionMaterial!
   updateUser(id: Float!, updateUserData: UpdateUserInput!): User!
 }
 
 type Query {
   course(id: Float!): Course!
   courses: [Course!]!
+  courseSection(id: Float!): CourseSection!
+  courseSections: [CourseSection!]!
   me: User!
+  sectionMaterial(id: Float!): SectionMaterial!
+  sectionMaterials: [SectionMaterial!]!
   user(id: Float!): User!
   users: [User!]!
+}
+
+type SectionMaterial {
+  id: Float!
+  name: String!
+  section: CourseSection!
+  sortNumber: Float!
+  type: AllowedTypes!
+  url: String!
+}
+
+input UpdateCourseSectionType {
+  name: String
+  sortNumber: Float
+}
+
+input UpdateCourseType {
+  description: String
+  headline: String
+  isPaid: Boolean
+  name: String
+  previewUrl: String
+  price: Float
+}
+
+input UpdateSectionMaterialType {
+  name: String
+  sortNumber: Float
+  type: AllowedTypes
+  url: String
 }
 
 input UpdateUserInput {
@@ -48,6 +128,7 @@ input UpdateUserInput {
 }
 
 type User {
+  createdCourses: [Course!]!
   email: String!
   firstName: String!
   id: Float!

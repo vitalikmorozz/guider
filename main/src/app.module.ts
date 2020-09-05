@@ -9,6 +9,10 @@ import { join } from 'path';
 import { Course } from './course/course.entity';
 import { CourseModule } from './course/course.module';
 import { AuthModule } from './auth/auth.module';
+import { CourseSectionModule } from './course.section/course.section.module';
+import { CourseSection } from './course.section/course.section.entity';
+import { SectionMaterial } from './section.material/section.material.entity';
+import { SectionMaterialModule } from './section.material/section.material.module';
 
 @Module({
     imports: [
@@ -29,12 +33,14 @@ import { AuthModule } from './auth/auth.module';
             username: `${process.env.POSTGRES_USER}`,
             password: `${process.env.POSTGRES_PASSWORD}`,
             database: `${process.env.POSTGRES_DATABASE}`,
-            entities: [User, Course],
+            entities: [User, Course, CourseSection, SectionMaterial],
             synchronize: true,
         }),
         AuthModule,
         UserModule,
         CourseModule,
+        CourseSectionModule,
+        SectionMaterialModule,
     ],
     controllers: [AppController],
 })
