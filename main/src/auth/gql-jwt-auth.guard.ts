@@ -10,9 +10,7 @@ import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-hos
 @Injectable()
 export class GqlAuthGuard extends AuthGuard('jwt') {
     canActivate(context: ExecutionContext) {
-        const ctx = GqlExecutionContext.create(context);
-        const { req } = ctx.getContext();
-
+        const req = GqlExecutionContext.create(context).getContext().req;
         return super.canActivate(new ExecutionContextHost([req]));
     }
 
