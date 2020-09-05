@@ -13,11 +13,15 @@ export class CourseService {
     ) {}
 
     async findAll(): Promise<Course[]> {
-        return this.courseRepository.find({ relations: ['author'] });
+        return this.courseRepository.find({
+            relations: ['author', 'sections', 'sections.materials'],
+        });
     }
 
     async findOne(id: number): Promise<Course> {
-        return this.courseRepository.findOne(id, { relations: ['author'] });
+        return this.courseRepository.findOne(id, {
+            relations: ['author', 'sections', 'sections.materials'],
+        });
     }
 
     async create(createCourseData: CreateCourseInput): Promise<Course> {

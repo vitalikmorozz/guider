@@ -1,6 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { User } from 'src/user/user.entity';
 import { IsString, IsBoolean, IsNumber, IsOptional } from 'class-validator';
+import { CourseSection } from 'src/course.section/course.section.entity';
 
 @InputType()
 export class UpdateCourseType {
@@ -35,4 +36,6 @@ export class UpdateCourseType {
     previewUrl: string;
 
     author: User;
+
+    sections: CourseSection[];
 }
