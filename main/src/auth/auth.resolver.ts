@@ -1,7 +1,8 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { ForbiddenException } from '@nestjs/common';
+import { ForbiddenException, ConflictException } from '@nestjs/common';
 import { AccessToken } from './access.token.type';
+import { CreateUserInput } from 'src/user/input.types/create.user.input';
 
 @Resolver()
 export class AuthResolver {
@@ -16,5 +17,13 @@ export class AuthResolver {
         if (!user)
             throw new ForbiddenException('Email or password is incorrect');
         return this.authService.login(user);
+    }
+
+    @Mutation(() => AccessToken)
+    async register(@Args('user') createUserDate: CreateUserInput) {
+        const user = await this.authService.checkIfExists(createUserDate.email);
+        if (user)
+            throw new ConflictException('User with that email already exists');
+        return this.authService.register(createUserDate);
     }
 }
