@@ -24,6 +24,15 @@ export class CourseSectionService {
         });
     }
 
+    async findBySortNumber(
+        sortNumber: number,
+        courseId: number,
+    ): Promise<CourseSection> {
+        return this.courseSectionRepository.findOne({
+            where: { sortNumber, course: { id: courseId } },
+        });
+    }
+
     async create(
         createCourseSectionData: CreateCourseSectionType,
     ): Promise<CourseSection> {
