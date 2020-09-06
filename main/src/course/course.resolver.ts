@@ -2,7 +2,7 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { CreateCourseInput } from './input.types/create.course.input';
 import { CourseService } from './course.service';
 import { Course } from './course.entity';
-import { UseGuards, ConflictException } from '@nestjs/common';
+import { UseGuards, ForbiddenException } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-jwt-auth.guard';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from 'src/user/user.entity';
@@ -47,7 +47,7 @@ export class CourseResolver {
     ) {
         const course = this.courseService.findOne(id);
         if (!course || (await course).author.id !== user.id)
-            throw new ConflictException('You can not edit this course');
+            throw new ForbiddenException('You can not edit this course');
         return this.courseService.updateOne(id, updateCourseData);
     }
 
