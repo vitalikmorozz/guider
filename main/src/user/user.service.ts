@@ -13,12 +13,14 @@ export class UserService {
     ) {}
 
     async findAll(): Promise<User[]> {
-        return this.userRepository.find({ relations: ['createdCourses'] });
+        return this.userRepository.find({
+            relations: ['createdCourses', 'wishlist'],
+        });
     }
 
     async findOne(id: number): Promise<User> {
         return this.userRepository.findOne(id, {
-            relations: ['createdCourses'],
+            relations: ['createdCourses', 'wishlist'],
         });
     }
 
@@ -36,7 +38,8 @@ export class UserService {
     }
 
     async save(user: User): Promise<User> {
-        return this.userRepository.save(user);
+        await this.userRepository.save(user);
+        return this.findOne(user.id);
     }
 
     async updateOne(

@@ -43,7 +43,8 @@ export class CourseSectionService {
     }
 
     async save(courseSection: CourseSection): Promise<CourseSection> {
-        return this.courseSectionRepository.save(courseSection);
+        await this.courseSectionRepository.save(courseSection);
+        return this.findOne(courseSection.id);
     }
 
     async updateOne(

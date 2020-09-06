@@ -38,4 +38,6 @@ export class UpdateCourseType {
     author: User;
 
     sections: CourseSection[];
+
+    wishListedBy: User[];
 }

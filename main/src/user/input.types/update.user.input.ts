@@ -28,4 +28,6 @@ export class UpdateUserInput {
     password: string;
 
     createdCourses: Course[];
+
+    wishlist: Course[];
 }

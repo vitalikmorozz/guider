@@ -2,7 +2,11 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { CreateCourseInput } from './input.types/create.course.input';
 import { CourseService } from './course.service';
 import { Course } from './course.entity';
-import { UseGuards, ForbiddenException } from '@nestjs/common';
+import {
+    UseGuards,
+    ForbiddenException,
+    NotFoundException,
+} from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-jwt-auth.guard';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from 'src/user/user.entity';
@@ -54,5 +58,24 @@ export class CourseResolver {
     @Mutation(() => Course, { name: 'deleteCourse' })
     async deleteOne(@Args('id') id: number) {
         return this.courseService.deleteOne(id);
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => User, { name: 'wishlistCourse' })
+    async wishlistCourse(
+        @CurrentUser() currentUser: User,
+        @Args('courseId') courseId: number,
+    ) {
+        const user = await this.userService.findOne(currentUser.id);
+        if (user.wishlist.find(course => course.id === courseId))
+            user.wishlist = user.wishlist.filter(
+                course => course.id !== courseId,
+            );
+        else {
+            const course = await this.courseService.findOne(courseId);
+            if (!course) throw new NotFoundException('Course not found');
+            user.wishlist.push(course);
+        }
+        return this.userService.save(user);
     }
 }

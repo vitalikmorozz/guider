@@ -76,6 +76,7 @@ type Mutation {
   updateCourseSection(id: Float!, updateCourseSectionData: UpdateCourseSectionType!): CourseSection!
   updateSectionMaterial(id: Float!, updateSectionMaterialData: UpdateSectionMaterialType!): SectionMaterial!
   updateUser(id: Float!, updateUserData: UpdateUserInput!): User!
+  wishlistCourse(courseId: Float!): User!
 }
 
 type Query {
@@ -133,4 +134,5 @@ type User {
   firstName: String!
   id: Float!
   lastName: String!
+  wishlist: [Course!]!
 }

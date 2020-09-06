@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+    ManyToMany,
+    JoinTable,
+} from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Course } from 'src/course/course.entity';
 
@@ -30,4 +37,12 @@ export class User {
 
     @Column()
     password: string;
+
+    @Field(() => [Course])
+    @ManyToMany(
+        () => Course,
+        course => course.wishListedBy,
+    )
+    @JoinTable()
+    wishlist: Course[];
 }

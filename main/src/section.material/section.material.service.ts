@@ -45,7 +45,8 @@ export class SectionMaterialService {
     }
 
     async save(sectionMaterial: SectionMaterial): Promise<SectionMaterial> {
-        return this.sectionMaterialRepository.save(sectionMaterial);
+        await this.sectionMaterialRepository.save(sectionMaterial);
+        return this.findOne(sectionMaterial.id);
     }
 
     async updateOne(

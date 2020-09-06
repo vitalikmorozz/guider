@@ -36,7 +36,8 @@ export class CourseService {
     }
 
     async save(course: Course): Promise<Course> {
-        return this.courseRepository.save(course);
+        await this.courseRepository.save(course);
+        return this.findOne(course.id);
     }
 
     async updateOne(

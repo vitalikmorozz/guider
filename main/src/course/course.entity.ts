@@ -4,6 +4,7 @@ import {
     Column,
     ManyToOne,
     OneToMany,
+    ManyToMany,
 } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
 import { User } from 'src/user/user.entity';
@@ -55,4 +56,7 @@ export class Course {
         { cascade: true },
     )
     sections: CourseSection[];
+
+    @ManyToMany(() => User)
+    wishListedBy: User[];
 }
