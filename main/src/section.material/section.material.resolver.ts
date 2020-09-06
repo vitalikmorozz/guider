@@ -1,6 +1,10 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { SectionMaterialService } from './section.material.service';
-import { UseGuards, ConflictException } from '@nestjs/common';
+import {
+    UseGuards,
+    ForbiddenException,
+    ConflictException,
+} from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-jwt-auth.guard';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from 'src/user/user.entity';
@@ -41,7 +45,17 @@ export class SectionMaterialResolver {
             !courseSection ||
             (await courseSection).course.author.id !== user.id
         )
-            throw new ConflictException('You can not edit this course');
+            throw new ForbiddenException('You can not edit this course');
+
+        const material = await this.sectionMaterialService.findBySortNumber(
+            createSectionMaterialData.sortNumber,
+            createSectionMaterialData.sectionId,
+        );
+
+        if (material)
+            throw new ConflictException(
+                'Material with this sort number already exists in current section',
+            );
 
         const sectionMaterial = await this.sectionMaterialService.create(
             createSectionMaterialData,
@@ -64,7 +78,7 @@ export class SectionMaterialResolver {
             !sectionMaterial ||
             (await sectionMaterial).section.course.author.id !== user.id
         )
-            throw new ConflictException('You can not edit this course');
+            throw new ForbiddenException('You can not edit this course');
 
         return this.sectionMaterialService.updateOne(
             id,

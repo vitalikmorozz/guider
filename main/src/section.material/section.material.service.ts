@@ -24,6 +24,15 @@ export class SectionMaterialService {
         });
     }
 
+    async findBySortNumber(
+        sortNumber: number,
+        sectionId: number,
+    ): Promise<SectionMaterial> {
+        return this.sectionMaterialRepository.findOne({
+            where: { sortNumber, section: { id: sectionId } },
+        });
+    }
+
     async create(
         createSectionMaterialData: CreateSectionMaterialType,
     ): Promise<SectionMaterial> {
