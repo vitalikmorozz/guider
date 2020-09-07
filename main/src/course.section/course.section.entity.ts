@@ -25,7 +25,6 @@ export class CourseSection {
     @Column()
     sortNumber: number;
 
-    @Field(() => Course)
     @ManyToOne(
         () => Course,
         course => course.sections,
