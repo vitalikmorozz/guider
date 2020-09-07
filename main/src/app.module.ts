@@ -15,6 +15,8 @@ import { SectionMaterial } from './section.material/section.material.entity';
 import { SectionMaterialModule } from './section.material/section.material.module';
 import { CourseBulletPoint } from './course.bulletpoint/course.bulletpoint.entity';
 import { CourseBulletPointModule } from './course.bulletpoint/course.bulletpoint.module';
+import { CourseRequirement } from './course.requrements/course.requirements.entity';
+import { CourseRequirementModule } from './course.requrements/course.requirements.module';
 
 @Module({
     imports: [
@@ -41,6 +43,7 @@ import { CourseBulletPointModule } from './course.bulletpoint/course.bulletpoint
                 CourseSection,
                 SectionMaterial,
                 CourseBulletPoint,
+                CourseRequirement,
             ],
             synchronize: true,
         }),
@@ -50,6 +53,7 @@ import { CourseBulletPointModule } from './course.bulletpoint/course.bulletpoint
         CourseSectionModule,
         SectionMaterialModule,
         CourseBulletPointModule,
+        CourseRequirementModule,
     ],
     controllers: [AppController],
 })
