@@ -4,6 +4,7 @@ import { CourseSection } from './course.section.entity';
 import { Repository } from 'typeorm';
 import { CreateCourseSectionType } from './inouut.types/create.course.section.input';
 import { UpdateCourseSectionType } from './inouut.types/update.course.section.input';
+import { SectionMaterial } from 'src/section.material/section.material.entity';
 
 @Injectable()
 export class CourseSectionService {
@@ -39,6 +40,17 @@ export class CourseSectionService {
         const courseSection = new CourseSection();
         courseSection.name = createCourseSectionData.name;
         courseSection.sortNumber = createCourseSectionData.sortNumber;
+        if (createCourseSectionData.materials)
+            courseSection.materials = createCourseSectionData.materials.map(
+                value => {
+                    let material = new SectionMaterial();
+                    material.name = value.name;
+                    material.sortNumber = value.sortNumber;
+                    material.type = value.type;
+                    material.url = value.url;
+                    return material;
+                },
+            );
         return courseSection;
     }
 

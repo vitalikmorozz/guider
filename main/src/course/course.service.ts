@@ -4,6 +4,8 @@ import { Course } from './course.entity';
 import { Repository } from 'typeorm';
 import { CreateCourseInput } from './input.types/create.course.input';
 import { UpdateCourseType } from './input.types/update.course.input';
+import { CourseSection } from 'src/course.section/course.section.entity';
+import { SectionMaterial } from 'src/section.material/section.material.entity';
 
 @Injectable()
 export class CourseService {
@@ -32,6 +34,22 @@ export class CourseService {
         course.isPaid = createCourseData.isPaid;
         course.price = createCourseData.price;
         course.previewUrl = createCourseData.previewUrl;
+        if (createCourseData.sections)
+            course.sections = createCourseData.sections.map(value => {
+                let section = new CourseSection();
+                section.name = value.name;
+                section.sortNumber = value.sortNumber;
+                if (value.materials)
+                    section.materials = value.materials.map(item => {
+                        let material = new SectionMaterial();
+                        material.name = item.name;
+                        material.sortNumber = item.sortNumber;
+                        material.type = item.type;
+                        material.url = item.url;
+                        return material;
+                    });
+                return section;
+            });
         return course;
     }
 

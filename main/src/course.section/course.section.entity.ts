@@ -11,7 +11,6 @@ import { SectionMaterial } from 'src/section.material/section.material.entity';
 import { Course } from 'src/course/course.entity';
 
 @Entity()
-@Unique(['sortNumber'])
 @ObjectType()
 export class CourseSection {
     @Field()
@@ -23,7 +22,7 @@ export class CourseSection {
     name: string;
 
     @Field()
-    @Column({ name: 'sortNumber' })
+    @Column()
     sortNumber: number;
 
     @Field(() => Course)
@@ -37,6 +36,7 @@ export class CourseSection {
     @OneToMany(
         () => SectionMaterial,
         sectionMaterial => sectionMaterial.section,
+        { cascade: true },
     )
     materials: SectionMaterial[];
 }

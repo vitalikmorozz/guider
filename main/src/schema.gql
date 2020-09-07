@@ -38,17 +38,17 @@ input CreateCourseInput {
   name: String!
   previewUrl: String!
   price: Float!
+  sections: [CreateCourseSectionType!]
 }
 
 input CreateCourseSectionType {
-  courseId: Float!
+  materials: [CreateSectionMaterialType!]
   name: String!
   sortNumber: Float!
 }
 
 input CreateSectionMaterialType {
   name: String!
-  sectionId: Float!
   sortNumber: Float!
   type: AllowedTypes!
   url: String!
@@ -63,8 +63,8 @@ input CreateUserInput {
 
 type Mutation {
   createCourse(createCourseData: CreateCourseInput!): Course!
-  createCourseSection(createCourseSectionData: CreateCourseSectionType!): CourseSection!
-  createSectionMaterial(createSectionMaterialData: CreateSectionMaterialType!): SectionMaterial!
+  createCourseSection(courseId: Float!, createCourseSectionData: CreateCourseSectionType!): CourseSection!
+  createSectionMaterial(createSectionMaterialData: CreateSectionMaterialType!, sectionId: Float!): SectionMaterial!
   createUser(createUserData: CreateUserInput!): User!
   deleteCourse(id: Float!): Course!
   deleteCourseSection(id: Float!): CourseSection!

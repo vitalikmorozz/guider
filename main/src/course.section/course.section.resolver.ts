@@ -34,25 +34,14 @@ export class CourseSectionResolver {
     @Mutation(() => CourseSection, { name: 'createCourseSection' })
     async create(
         @CurrentUser() user: User,
+        @Args('courseId') courseId: number,
         @Args('createCourseSectionData')
         createCourseSectionData: CreateCourseSectionType,
     ) {
-        const course = await this.courseService.findOne(
-            createCourseSectionData.courseId,
-        );
+        const course = await this.courseService.findOne(courseId);
 
         if (!course || (await course).author.id !== user.id)
             throw new ForbiddenException('You can not edit this course');
-
-        const section = await this.courseSectionService.findBySortNumber(
-            createCourseSectionData.sortNumber,
-            createCourseSectionData.courseId,
-        );
-
-        if (section)
-            throw new ConflictException(
-                'Section with this sort number already exists in current course',
-            );
 
         const courseSection = await this.courseSectionService.create(
             createCourseSectionData,

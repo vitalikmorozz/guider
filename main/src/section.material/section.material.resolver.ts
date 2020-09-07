@@ -34,11 +34,12 @@ export class SectionMaterialResolver {
     @Mutation(() => SectionMaterial, { name: 'createSectionMaterial' })
     async create(
         @CurrentUser() user: User,
+        @Args('sectionId') sectionId: number,
         @Args('createSectionMaterialData')
         createSectionMaterialData: CreateSectionMaterialType,
     ) {
         const courseSection = await this.courseSectionService.findOne(
-            createSectionMaterialData.sectionId,
+            sectionId,
         );
 
         if (
@@ -46,16 +47,6 @@ export class SectionMaterialResolver {
             (await courseSection).course.author.id !== user.id
         )
             throw new ForbiddenException('You can not edit this course');
-
-        const material = await this.sectionMaterialService.findBySortNumber(
-            createSectionMaterialData.sortNumber,
-            createSectionMaterialData.sectionId,
-        );
-
-        if (material)
-            throw new ConflictException(
-                'Material with this sort number already exists in current section',
-            );
 
         const sectionMaterial = await this.sectionMaterialService.create(
             createSectionMaterialData,

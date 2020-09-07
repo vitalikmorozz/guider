@@ -1,5 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsString, IsBoolean, IsNumber } from 'class-validator';
+import { CourseSection } from 'src/course.section/course.section.entity';
+import { CreateCourseSectionType } from 'src/course.section/inouut.types/create.course.section.input';
 
 @InputType()
 export class CreateCourseInput {
@@ -22,6 +24,9 @@ export class CreateCourseInput {
     @IsNumber()
     @Field()
     price: number;
+
+    @Field(() => [CreateCourseSectionType], { nullable: true })
+    sections: CreateCourseSectionType[];
 
     @IsString()
     @Field()

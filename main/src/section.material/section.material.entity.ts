@@ -18,7 +18,6 @@ registerEnumType(AllowedTypes, {
 });
 
 @Entity()
-@Unique(['sortNumber'])
 @ObjectType()
 export class SectionMaterial {
     @Field()
@@ -38,7 +37,7 @@ export class SectionMaterial {
     url: string;
 
     @Field()
-    @Column({ name: 'sortNumber' })
+    @Column()
     sortNumber: number;
 
     @Field(() => CourseSection)

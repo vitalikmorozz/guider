@@ -1,5 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsString, IsNumber } from 'class-validator';
+import { CreateSectionMaterialType } from 'src/section.material/input.types/create.section.material';
 
 @InputType()
 export class CreateCourseSectionType {
@@ -11,7 +12,6 @@ export class CreateCourseSectionType {
     @Field()
     sortNumber: number;
 
-    @IsNumber()
-    @Field()
-    courseId: number;
+    @Field(() => [CreateSectionMaterialType], { nullable: true })
+    materials: CreateSectionMaterialType[];
 }

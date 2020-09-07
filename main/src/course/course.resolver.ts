@@ -6,13 +6,13 @@ import {
     UseGuards,
     ForbiddenException,
     NotFoundException,
+    ConflictException,
 } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/gql-jwt-auth.guard';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { UpdateCourseType } from './input.types/update.course.input';
-
 @Resolver()
 export class CourseResolver {
     constructor(
@@ -67,6 +67,8 @@ export class CourseResolver {
         @Args('courseId') courseId: number,
     ) {
         const user = await this.userService.findOne(currentUser.id);
+        if (user.createdCourses.find(course => course.id === courseId))
+            throw new ConflictException('You can not wishlist your own course');
         if (user.wishlist.find(course => course.id === courseId))
             user.wishlist = user.wishlist.filter(
                 course => course.id !== courseId,

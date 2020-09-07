@@ -18,8 +18,4 @@ export class CreateSectionMaterialType {
     @IsNumber()
     @Field()
     sortNumber: number;
-
-    @IsNumber()
-    @Field()
-    sectionId: number;
 }
