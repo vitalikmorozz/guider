@@ -13,6 +13,8 @@ import { CourseSectionModule } from './course.section/course.section.module';
 import { CourseSection } from './course.section/course.section.entity';
 import { SectionMaterial } from './section.material/section.material.entity';
 import { SectionMaterialModule } from './section.material/section.material.module';
+import { CourseBulletPoint } from './course.bulletpoint/course.bulletpoint.entity';
+import { CourseBulletPointModule } from './course.bulletpoint/course.bulletpoint.module';
 
 @Module({
     imports: [
@@ -33,7 +35,13 @@ import { SectionMaterialModule } from './section.material/section.material.modul
             username: `${process.env.POSTGRES_USER}`,
             password: `${process.env.POSTGRES_PASSWORD}`,
             database: `${process.env.POSTGRES_DATABASE}`,
-            entities: [User, Course, CourseSection, SectionMaterial],
+            entities: [
+                User,
+                Course,
+                CourseSection,
+                SectionMaterial,
+                CourseBulletPoint,
+            ],
             synchronize: true,
         }),
         AuthModule,
@@ -41,6 +49,7 @@ import { SectionMaterialModule } from './section.material/section.material.modul
         CourseModule,
         CourseSectionModule,
         SectionMaterialModule,
+        CourseBulletPointModule,
     ],
     controllers: [AppController],
 })

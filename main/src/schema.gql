@@ -13,6 +13,7 @@ enum AllowedTypes {
 
 type Course {
   author: User!
+  bulletPoints: [CourseBulletPoint!]!
   description: String!
   headline: String!
   id: Float!
@@ -23,11 +24,21 @@ type Course {
   sections: [CourseSection!]!
 }
 
+type CourseBulletPoint {
+  description: String!
+  id: Float!
+  sortNumber: Float!
+}
+
 type CourseSection {
-  course: Course!
   id: Float!
   materials: [SectionMaterial!]!
   name: String!
+  sortNumber: Float!
+}
+
+input CreateBulletPointType {
+  description: String!
   sortNumber: Float!
 }
 
@@ -63,16 +74,19 @@ input CreateUserInput {
 
 type Mutation {
   createCourse(createCourseData: CreateCourseInput!): Course!
+  createCourseBulletPoint(courseId: Float!, createBulletPointData: CreateBulletPointType!): CourseBulletPoint!
   createCourseSection(courseId: Float!, createCourseSectionData: CreateCourseSectionType!): CourseSection!
   createSectionMaterial(createSectionMaterialData: CreateSectionMaterialType!, sectionId: Float!): SectionMaterial!
   createUser(createUserData: CreateUserInput!): User!
   deleteCourse(id: Float!): Course!
+  deleteCourseBulletPoint(id: Float!): CourseBulletPoint!
   deleteCourseSection(id: Float!): CourseSection!
   deleteSectionMaterial(id: Float!): SectionMaterial!
   deleteUser(id: Float!): User!
   login(email: String!, password: String!): AccessToken!
   register(user: CreateUserInput!): AccessToken!
   updateCourse(id: Float!, updateCourseData: UpdateCourseType!): Course!
+  updateCourseBulletPoint(id: Float!, updateBulletTypeData: UpdateBulletPointType!): CourseBulletPoint!
   updateCourseSection(id: Float!, updateCourseSectionData: UpdateCourseSectionType!): CourseSection!
   updateSectionMaterial(id: Float!, updateSectionMaterialData: UpdateSectionMaterialType!): SectionMaterial!
   updateUser(id: Float!, updateUserData: UpdateUserInput!): User!
@@ -80,7 +94,9 @@ type Mutation {
 }
 
 type Query {
+  bulletPoints(id: Float!): CourseBulletPoint!
   course(id: Float!): Course!
+  courseBulletPoints(courseId: Float!): [CourseBulletPoint!]!
   courses: [Course!]!
   courseSection(id: Float!): CourseSection!
   courseSections: [CourseSection!]!
@@ -94,10 +110,14 @@ type Query {
 type SectionMaterial {
   id: Float!
   name: String!
-  section: CourseSection!
   sortNumber: Float!
   type: AllowedTypes!
   url: String!
+}
+
+input UpdateBulletPointType {
+  description: String!
+  sortNumber: Float!
 }
 
 input UpdateCourseSectionType {
