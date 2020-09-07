@@ -21,6 +21,7 @@ export class CourseService {
                 'sections',
                 'sections.materials',
                 'bulletPoints',
+                'requirements,',
             ],
         });
     }
@@ -32,6 +33,7 @@ export class CourseService {
                 'sections',
                 'sections.materials',
                 'bulletPoints',
+                'requirements',
             ],
         });
     }

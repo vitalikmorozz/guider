@@ -3,6 +3,7 @@ import { User } from 'src/user/user.entity';
 import { IsString, IsBoolean, IsNumber, IsOptional } from 'class-validator';
 import { CourseSection } from 'src/course.section/course.section.entity';
 import { CourseBulletPoint } from 'src/course.bulletpoint/course.bulletpoint.entity';
+import { CourseRequirement } from 'src/course.requrements/course.requirements.entity';
 
 @InputType()
 export class UpdateCourseType {
@@ -43,4 +44,6 @@ export class UpdateCourseType {
     wishListedBy: User[];
 
     bulletPoints: CourseBulletPoint[];
+
+    requirements: CourseRequirement[];
 }
