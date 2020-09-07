@@ -49,8 +49,8 @@ export class CourseResolver {
         @Args('id') id: number,
         @Args('updateCourseData') updateCourseData: UpdateCourseType,
     ) {
-        const course = this.courseService.findOne(id);
-        if (!course || (await course).author.id !== user.id)
+        const course = await this.courseService.findOne(id);
+        if (!course || course.author.id !== user.id)
             throw new ForbiddenException('You can not edit this course');
         return this.courseService.updateOne(id, updateCourseData);
     }

@@ -2,6 +2,7 @@ import { InputType, Field } from '@nestjs/graphql';
 import { User } from 'src/user/user.entity';
 import { IsString, IsBoolean, IsNumber, IsOptional } from 'class-validator';
 import { CourseSection } from 'src/course.section/course.section.entity';
+import { CourseBulletPoint } from 'src/course.bulletpoint/course.bulletpoint.entity';
 
 @InputType()
 export class UpdateCourseType {
@@ -40,4 +41,6 @@ export class UpdateCourseType {
     sections: CourseSection[];
 
     wishListedBy: User[];
+
+    bulletPoints: CourseBulletPoint[];
 }

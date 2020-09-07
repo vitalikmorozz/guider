@@ -9,6 +9,7 @@ import {
 import { ObjectType, Field } from '@nestjs/graphql';
 import { User } from 'src/user/user.entity';
 import { CourseSection } from 'src/course.section/course.section.entity';
+import { CourseBulletPoint } from 'src/course.bulletpoint/course.bulletpoint.entity';
 
 @Entity()
 @ObjectType()
@@ -56,6 +57,14 @@ export class Course {
         { cascade: true },
     )
     sections: CourseSection[];
+
+    @Field(() => [CourseBulletPoint])
+    @OneToMany(
+        () => CourseBulletPoint,
+        courseBulletPoint => courseBulletPoint.course,
+        { cascade: true },
+    )
+    bulletPoints: CourseBulletPoint[];
 
     @ManyToMany(() => User)
     wishListedBy: User[];
