@@ -6,12 +6,12 @@ import { Course } from 'src/course/course.entity';
 export class UpdateBulletPointType {
     @IsOptional()
     @IsString()
-    @Field()
+    @Field({ nullable: true })
     description: string;
 
     @IsOptional()
     @IsNumber()
-    @Field()
+    @Field({ nullable: true })
     sortNumber: number;
 
     course: Course;

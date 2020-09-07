@@ -47,7 +47,7 @@ export class CourseBulletPointResolver {
         @CurrentUser() user: User,
         @Args('id') id: number,
         @Args('updateBulletTypeData')
-        updateBulletTypeData: UpdateBulletPointType,
+        updateBulletPointData: UpdateBulletPointType,
     ) {
         const courseBulletPoint = await this.courseBulletPointService.findOne(
             id,
@@ -56,10 +56,10 @@ export class CourseBulletPointResolver {
             !courseBulletPoint ||
             courseBulletPoint.course.author.id !== user.id
         )
-            throw new ForbiddenException('You can not edit this course');
+            throw new ForbiddenException('You can not edit this bullet point');
         return this.courseBulletPointService.updateOne(
             id,
-            updateBulletTypeData,
+            updateBulletPointData,
         );
     }
 

@@ -17,11 +17,14 @@ export class CourseBulletPointService {
     async findAll(courseId: number): Promise<CourseBulletPoint[]> {
         return this.courseBulletPointRepository.find({
             where: { course: { id: courseId } },
+            relations: ['course', 'course.author'],
         });
     }
 
     async findOne(id: number): Promise<CourseBulletPoint> {
-        return this.courseBulletPointRepository.findOne(id);
+        return this.courseBulletPointRepository.findOne(id, {
+            relations: ['course', 'course.author'],
+        });
     }
 
     async create(
