@@ -40,7 +40,6 @@ export class SectionMaterial {
     @Column()
     sortNumber: number;
 
-    @Field(() => CourseSection)
     @ManyToOne(
         () => CourseSection,
         courseSection => courseSection.materials,
