@@ -17,6 +17,10 @@ import { CourseBulletPoint } from './course.bulletpoint/course.bulletpoint.entit
 import { CourseBulletPointModule } from './course.bulletpoint/course.bulletpoint.module';
 import { CourseRequirement } from './course.requrements/course.requirements.entity';
 import { CourseRequirementModule } from './course.requrements/course.requirements.module';
+import { Category } from './course.category/category.entity';
+import { CategoryModule } from './course.category/category.module';
+import { CourseRating } from './course.rating/course.rating.entity';
+import { CourseRatingModule } from './course.rating/course.rating.module';
 
 @Module({
     imports: [
@@ -44,6 +48,8 @@ import { CourseRequirementModule } from './course.requrements/course.requirement
                 SectionMaterial,
                 CourseBulletPoint,
                 CourseRequirement,
+                Category,
+                CourseRating,
             ],
             synchronize: true,
         }),
@@ -54,6 +60,8 @@ import { CourseRequirementModule } from './course.requrements/course.requirement
         SectionMaterialModule,
         CourseBulletPointModule,
         CourseRequirementModule,
+        CategoryModule,
+        CourseRatingModule,
     ],
     controllers: [AppController],
 })

@@ -11,9 +11,15 @@ enum AllowedTypes {
   video
 }
 
+type Category {
+  id: Float!
+  name: String!
+}
+
 type Course {
   author: User!
   bulletPoints: [CourseBulletPoint!]!
+  category: Category!
   description: String!
   headline: String!
   id: Float!
@@ -21,6 +27,7 @@ type Course {
   name: String!
   previewUrl: String!
   price: Float!
+  ratings: [CourseRating!]!
   requirements: [CourseRequirement!]!
   sections: [CourseSection!]!
 }
@@ -29,6 +36,13 @@ type CourseBulletPoint {
   description: String!
   id: Float!
   sortNumber: Float!
+}
+
+type CourseRating {
+  course: Course!
+  id: Float!
+  rating: Float!
+  user: User!
 }
 
 type CourseRequirement {
@@ -49,14 +63,25 @@ input CreateBulletPointType {
   sortNumber: Float!
 }
 
+input CreateCategoryType {
+  name: String!
+}
+
 input CreateCourseInput {
+  bulletPoints: [CreateBulletPointType!]
+  category_id: Float!
   description: String!
   headline: String!
   isPaid: Boolean!
   name: String!
   previewUrl: String!
   price: Float!
+  requirements: [CreateCourseRequirementType!]
   sections: [CreateCourseSectionType!]
+}
+
+input CreateCourseRatingType {
+  rating: Float!
 }
 
 input CreateCourseRequirementType {
@@ -85,20 +110,26 @@ input CreateUserInput {
 }
 
 type Mutation {
+  buyCourse(courseId: Float!): NetworkResponse!
+  createCategory(createCategoryData: CreateCategoryType!): Category!
   createCourse(createCourseData: CreateCourseInput!): Course!
   createCourseBulletPoint(courseId: Float!, createBulletPointData: CreateBulletPointType!): CourseBulletPoint!
   createCourseRequirement(courseId: Float!, createCourseRequirementData: CreateCourseRequirementType!): CourseRequirement!
   createCourseSection(courseId: Float!, createCourseSectionData: CreateCourseSectionType!): CourseSection!
   createSectionMaterial(createSectionMaterialData: CreateSectionMaterialType!, sectionId: Float!): SectionMaterial!
   createUser(createUserData: CreateUserInput!): User!
+  deleteCategory(id: Float!): Category!
   deleteCourse(id: Float!): Course!
   deleteCourseBulletPoint(id: Float!): CourseBulletPoint!
+  deleteCourseRating(id: Float!): CourseRating!
   deleteCourseRequirement(id: Float!): CourseRequirement!
   deleteCourseSection(id: Float!): CourseSection!
   deleteSectionMaterial(id: Float!): SectionMaterial!
   deleteUser(id: Float!): User!
   login(email: String!, password: String!): AccessToken!
+  rateCourse(courseId: Float!, createCourseRatingData: CreateCourseRatingType!): CourseRating!
   register(user: CreateUserInput!): AccessToken!
+  updateCategory(id: Float!, updateCategoryData: UpdateCategoryType!): Category!
   updateCourse(id: Float!, updateCourseData: UpdateCourseType!): Course!
   updateCourseBulletPoint(id: Float!, updateBulletTypeData: UpdateBulletPointType!): CourseBulletPoint!
   updateCourseRequirement(id: Float!, updateCourseRequirementData: UpdateCourseRequirementType!): CourseRequirement!
@@ -108,18 +139,29 @@ type Mutation {
   wishlistCourse(courseId: Float!): User!
 }
 
+type NetworkResponse {
+  message: String
+  status: String!
+}
+
 type Query {
   bulletPoints(id: Float!): CourseBulletPoint!
+  categories: [Category!]!
+  category(id: Float!): Category!
   course(id: Float!): Course!
   courseBulletPoints(courseId: Float!): [CourseBulletPoint!]!
+  courseRating(id: Float!): CourseRating!
+  courseRatings(courseId: Float!): [CourseRating!]!
   courseRequirement(id: Float!): CourseRequirement!
   courseRequirements(courseId: Float!): [CourseRequirement!]!
   courses: [Course!]!
   courseSection(id: Float!): CourseSection!
-  courseSections: [CourseSection!]!
+  courseSections(courseId: Float!): [CourseSection!]!
   me: User!
+  myPurchasedCoursesList: [Course!]!
+  myWishList: [Course!]!
   sectionMaterial(id: Float!): SectionMaterial!
-  sectionMaterials: [SectionMaterial!]!
+  sectionMaterials(sectionId: Float!): [SectionMaterial!]!
   user(id: Float!): User!
   users: [User!]!
 }
@@ -135,6 +177,10 @@ type SectionMaterial {
 input UpdateBulletPointType {
   description: String
   sortNumber: Float
+}
+
+input UpdateCategoryType {
+  name: String!
 }
 
 input UpdateCourseRequirementType {
@@ -176,5 +222,5 @@ type User {
   firstName: String!
   id: Float!
   lastName: String!
-  wishlist: [Course!]!
+  ratings: [CourseRating!]!
 }
