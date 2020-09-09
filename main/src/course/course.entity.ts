@@ -13,6 +13,7 @@ import { CourseBulletPoint } from 'src/course.bulletpoint/course.bulletpoint.ent
 import { CourseRequirement } from 'src/course.requrements/course.requirements.entity';
 import { Category } from 'src/course.category/category.entity';
 import { CreateCourseInput } from './input.types/create.course.input';
+import { CourseRating } from 'src/course.rating/course.rating.entity';
 
 @Entity()
 @ObjectType()
@@ -55,6 +56,13 @@ export class Course {
     @Field()
     @Column()
     previewUrl: string;
+
+    @Field(() => [CourseRating])
+    @OneToMany(
+        () => CourseRating,
+        rating => rating.course,
+    )
+    ratings: CourseRating[];
 
     @Field(() => Category)
     @ManyToOne(

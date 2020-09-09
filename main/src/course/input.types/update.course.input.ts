@@ -5,6 +5,7 @@ import { CourseSection } from 'src/course.section/course.section.entity';
 import { CourseBulletPoint } from 'src/course.bulletpoint/course.bulletpoint.entity';
 import { CourseRequirement } from 'src/course.requrements/course.requirements.entity';
 import { Category } from 'src/course.category/category.entity';
+import { CourseRating } from 'src/course.rating/course.rating.entity';
 
 @InputType()
 export class UpdateCourseType {
@@ -51,4 +52,6 @@ export class UpdateCourseType {
     category: Category;
 
     boughtBy: User[];
+
+    ratings: CourseRating[];
 }

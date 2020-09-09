@@ -25,6 +25,8 @@ export class CourseService {
                 'bulletPoints',
                 'requirements',
                 'category',
+                'ratings',
+                'ratings.user',
             ],
         });
     }
@@ -38,6 +40,8 @@ export class CourseService {
                 'bulletPoints',
                 'requirements',
                 'category',
+                'ratings',
+                'ratings.user',
             ],
         });
     }
