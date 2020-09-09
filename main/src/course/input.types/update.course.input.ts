@@ -4,6 +4,7 @@ import { IsString, IsBoolean, IsNumber, IsOptional } from 'class-validator';
 import { CourseSection } from 'src/course.section/course.section.entity';
 import { CourseBulletPoint } from 'src/course.bulletpoint/course.bulletpoint.entity';
 import { CourseRequirement } from 'src/course.requrements/course.requirements.entity';
+import { Category } from 'src/course.category/category.entity';
 
 @InputType()
 export class UpdateCourseType {
@@ -46,4 +47,8 @@ export class UpdateCourseType {
     bulletPoints: CourseBulletPoint[];
 
     requirements: CourseRequirement[];
+
+    category: Category;
+
+    boughtBy: User[];
 }
