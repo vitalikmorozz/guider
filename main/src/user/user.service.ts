@@ -14,13 +14,25 @@ export class UserService {
 
     async findAll(): Promise<User[]> {
         return this.userRepository.find({
-            relations: ['createdCourses', 'wishlist', 'purchasedCourses'],
+            relations: [
+                'createdCourses',
+                'wishlist',
+                'purchasedCourses',
+                'ratings',
+                'ratings.course',
+            ],
         });
     }
 
     async findOne(id: number): Promise<User> {
         return this.userRepository.findOne(id, {
-            relations: ['createdCourses', 'wishlist', 'purchasedCourses'],
+            relations: [
+                'createdCourses',
+                'wishlist',
+                'purchasedCourses',
+                'ratings',
+                'ratings.course',
+            ],
         });
     }
 

@@ -1,6 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsString, IsEmail, IsOptional } from 'class-validator';
 import { Course } from 'src/course/course.entity';
+import { CourseRating } from 'src/course.rating/course.rating.entity';
 
 @InputType()
 export class UpdateUserInput {
@@ -32,4 +33,6 @@ export class UpdateUserInput {
     wishlist: Course[];
 
     purchasedCourses: Course[];
+
+    ratings: CourseRating[];
 }

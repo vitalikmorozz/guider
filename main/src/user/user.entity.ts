@@ -9,6 +9,7 @@ import {
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Course } from 'src/course/course.entity';
 import { CreateUserInput } from './input.types/create.user.input';
+import { CourseRating } from 'src/course.rating/course.rating.entity';
 
 @Entity()
 @ObjectType()
@@ -61,4 +62,11 @@ export class User {
     )
     @JoinTable()
     purchasedCourses: Course[];
+
+    @Field(() => [CourseRating])
+    @OneToMany(
+        () => CourseRating,
+        courseRating => courseRating.user,
+    )
+    ratings: CourseRating[];
 }
