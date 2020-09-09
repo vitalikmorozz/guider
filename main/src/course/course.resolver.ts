@@ -13,11 +13,14 @@ import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { UpdateCourseType } from './input.types/update.course.input';
+import { NetworkResponse } from 'src/types';
+import { CategoryService } from 'src/course.category/category.service';
 @Resolver()
 export class CourseResolver {
     constructor(
         private readonly courseService: CourseService,
         private readonly userService: UserService,
+        private readonly categoryService: CategoryService,
     ) {}
 
     @Query(() => [Course], { name: 'courses' })
@@ -38,6 +41,12 @@ export class CourseResolver {
     ) {
         const course = await this.courseService.create(createCourseData);
         const author = await this.userService.findOne(user.id);
+        const category = await this.categoryService.findOne(
+            createCourseData.category_id,
+        );
+        if (!category)
+            throw new NotFoundException('Category with specified id not found');
+        course.category = category;
         course.author = author;
         return this.courseService.save(course);
     }
@@ -55,6 +64,7 @@ export class CourseResolver {
         return this.courseService.updateOne(id, updateCourseData);
     }
 
+    @UseGuards(GqlAuthGuard)
     @Mutation(() => Course, { name: 'deleteCourse' })
     async deleteOne(@Args('id') id: number) {
         return this.courseService.deleteOne(id);
@@ -79,5 +89,39 @@ export class CourseResolver {
             user.wishlist.push(course);
         }
         return this.userService.save(user);
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => NetworkResponse, { name: 'buyCourse' })
+    async buyCourse(
+        @CurrentUser() currentUser: User,
+        @Args('courseId') courseId: number,
+    ): Promise<NetworkResponse> {
+        const user = await this.userService.findOne(currentUser.id);
+        if (user.createdCourses.find(course => course.id === courseId))
+            throw new ConflictException('You can not buy your own course');
+        if (user.purchasedCourses.find(course => course.id === courseId))
+            throw new ConflictException('You already bought this course');
+        else {
+            const course = await this.courseService.findOne(courseId);
+            if (!course) throw new NotFoundException('Course not found');
+            user.purchasedCourses.push(course);
+        }
+        await this.userService.save(user);
+        return { status: 'ok' };
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Query(() => [Course], { name: 'myWishList' })
+    async myWishList(@CurrentUser() currentUser: User) {
+        const user = await this.userService.findOne(currentUser.id);
+        return user.wishlist;
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Query(() => [Course], { name: 'myPurchasedCoursesList' })
+    async myPurchasedCoursesList(@CurrentUser() currentUser: User) {
+        const user = await this.userService.findOne(currentUser.id);
+        return user.purchasedCourses;
     }
 }

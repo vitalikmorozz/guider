@@ -21,8 +21,8 @@ export class SectionMaterialResolver {
     ) {}
 
     @Query(() => [SectionMaterial], { name: 'sectionMaterials' })
-    async getAll() {
-        return this.sectionMaterialService.findAll();
+    async getAll(@Args('sectionId') sectionId: number) {
+        return this.sectionMaterialService.findAll(sectionId);
     }
 
     @Query(() => SectionMaterial, { name: 'sectionMaterial' })
@@ -77,6 +77,7 @@ export class SectionMaterialResolver {
         );
     }
 
+    @UseGuards(GqlAuthGuard)
     @Mutation(() => SectionMaterial, { name: 'deleteSectionMaterial' })
     async deleteOne(@Args('id') id: number) {
         return this.sectionMaterialService.deleteOne(id);

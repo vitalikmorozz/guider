@@ -12,8 +12,9 @@ export class SectionMaterialService {
         private readonly sectionMaterialRepository: Repository<SectionMaterial>,
     ) {}
 
-    async findAll(): Promise<SectionMaterial[]> {
+    async findAll(sectionId: number): Promise<SectionMaterial[]> {
         return this.sectionMaterialRepository.find({
+            where: { section: { id: sectionId } },
             relations: ['section', 'section.course', 'section.course.author'],
         });
     }
@@ -36,11 +37,7 @@ export class SectionMaterialService {
     async create(
         createSectionMaterialData: CreateSectionMaterialType,
     ): Promise<SectionMaterial> {
-        const sectionMaterial = new SectionMaterial();
-        sectionMaterial.name = createSectionMaterialData.name;
-        sectionMaterial.sortNumber = createSectionMaterialData.sortNumber;
-        sectionMaterial.type = createSectionMaterialData.type;
-        sectionMaterial.url = createSectionMaterialData.url;
+        const sectionMaterial = new SectionMaterial(createSectionMaterialData);
         return sectionMaterial;
     }
 

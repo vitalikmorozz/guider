@@ -21,8 +21,8 @@ export class CourseSectionResolver {
     ) {}
 
     @Query(() => [CourseSection], { name: 'courseSections' })
-    async getAll() {
-        return this.courseSectionService.findAll();
+    async getAll(@Args('courseId') courseId: number) {
+        return this.courseSectionService.findAll(courseId);
     }
 
     @Query(() => CourseSection, { name: 'courseSection' })
@@ -66,6 +66,7 @@ export class CourseSectionResolver {
         return this.courseSectionService.updateOne(id, updateCourseSectionData);
     }
 
+    @UseGuards(GqlAuthGuard)
     @Mutation(() => CourseSection, { name: 'deleteCourseSection' })
     async deleteOne(@Args('id') id: number) {
         return this.courseSectionService.deleteOne(id);

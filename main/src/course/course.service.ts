@@ -6,6 +6,8 @@ import { CreateCourseInput } from './input.types/create.course.input';
 import { UpdateCourseType } from './input.types/update.course.input';
 import { CourseSection } from 'src/course.section/course.section.entity';
 import { SectionMaterial } from 'src/section.material/section.material.entity';
+import { CourseBulletPoint } from 'src/course.bulletpoint/course.bulletpoint.entity';
+import { CourseRequirement } from 'src/course.requrements/course.requirements.entity';
 
 @Injectable()
 export class CourseService {
@@ -21,7 +23,8 @@ export class CourseService {
                 'sections',
                 'sections.materials',
                 'bulletPoints',
-                'requirements,',
+                'requirements',
+                'category',
             ],
         });
     }
@@ -34,32 +37,34 @@ export class CourseService {
                 'sections.materials',
                 'bulletPoints',
                 'requirements',
+                'category',
             ],
         });
     }
 
     async create(createCourseData: CreateCourseInput): Promise<Course> {
-        const course = new Course();
-        course.name = createCourseData.name;
-        course.description = createCourseData.description;
-        course.headline = createCourseData.headline;
-        course.isPaid = createCourseData.isPaid;
-        course.price = createCourseData.price;
-        course.previewUrl = createCourseData.previewUrl;
+        const course = new Course(createCourseData);
+
+        //Handle bullet points
+        if (createCourseData.bulletPoints)
+            course.bulletPoints = createCourseData.bulletPoints.map(
+                value => new CourseBulletPoint(value),
+            );
+
+        //Handle requirements
+        if (createCourseData.requirements)
+            course.requirements = createCourseData.requirements.map(
+                value => new CourseRequirement(value),
+            );
+
+        //Handle creating of new sections and their materials
         if (createCourseData.sections)
             course.sections = createCourseData.sections.map(value => {
-                let section = new CourseSection();
-                section.name = value.name;
-                section.sortNumber = value.sortNumber;
+                let section = new CourseSection(value);
                 if (value.materials)
-                    section.materials = value.materials.map(item => {
-                        let material = new SectionMaterial();
-                        material.name = item.name;
-                        material.sortNumber = item.sortNumber;
-                        material.type = item.type;
-                        material.url = item.url;
-                        return material;
-                    });
+                    section.materials = value.materials.map(
+                        item => new SectionMaterial(item),
+                    );
                 return section;
             });
         return course;

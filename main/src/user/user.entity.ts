@@ -8,10 +8,20 @@ import {
 } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Course } from 'src/course/course.entity';
+import { CreateUserInput } from './input.types/create.user.input';
 
 @Entity()
 @ObjectType()
 export class User {
+    constructor(user?: CreateUserInput) {
+        if (user) {
+            this.firstName = user.firstName;
+            this.lastName = user.lastName;
+            this.email = user.email;
+            this.password = user.password;
+        }
+    }
+
     @Field()
     @PrimaryGeneratedColumn()
     id: number;
@@ -38,11 +48,17 @@ export class User {
     @Column()
     password: string;
 
-    @Field(() => [Course])
     @ManyToMany(
         () => Course,
         course => course.wishListedBy,
     )
     @JoinTable()
     wishlist: Course[];
+
+    @ManyToMany(
+        () => Course,
+        course => course.boughtBy,
+    )
+    @JoinTable()
+    purchasedCourses: Course[];
 }

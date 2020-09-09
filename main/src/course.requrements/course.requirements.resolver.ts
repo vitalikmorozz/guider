@@ -67,6 +67,7 @@ export class CourseRequirementResolver {
         );
     }
 
+    @UseGuards(GqlAuthGuard)
     @Mutation(() => CourseRequirement, {
         name: 'deleteCourseRequirement',
     })

@@ -11,10 +11,23 @@ import { User } from 'src/user/user.entity';
 import { CourseSection } from 'src/course.section/course.section.entity';
 import { CourseBulletPoint } from 'src/course.bulletpoint/course.bulletpoint.entity';
 import { CourseRequirement } from 'src/course.requrements/course.requirements.entity';
+import { Category } from 'src/course.category/category.entity';
+import { CreateCourseInput } from './input.types/create.course.input';
 
 @Entity()
 @ObjectType()
 export class Course {
+    constructor(course?: CreateCourseInput) {
+        if (course) {
+            this.name = course.name;
+            this.description = course.description;
+            this.headline = course.headline;
+            this.isPaid = course.isPaid;
+            this.price = course.price;
+            this.previewUrl = course.previewUrl;
+        }
+    }
+
     @Field()
     @PrimaryGeneratedColumn()
     id: number;
@@ -42,6 +55,14 @@ export class Course {
     @Field()
     @Column()
     previewUrl: string;
+
+    @Field(() => Category)
+    @ManyToOne(
+        () => Category,
+        category => category.courses,
+        { cascade: true },
+    )
+    category: Category;
 
     @Field(() => User)
     @ManyToOne(
@@ -77,4 +98,10 @@ export class Course {
 
     @ManyToMany(() => User)
     wishListedBy: User[];
+
+    @ManyToMany(
+        () => User,
+        user => user.purchasedCourses,
+    )
+    boughtBy: User[];
 }

@@ -13,8 +13,9 @@ export class CourseSectionService {
         private readonly courseSectionRepository: Repository<CourseSection>,
     ) {}
 
-    async findAll(): Promise<CourseSection[]> {
+    async findAll(courseId: number): Promise<CourseSection[]> {
         return this.courseSectionRepository.find({
+            where: { course: { id: courseId } },
             relations: ['materials', 'course', 'course.author'],
         });
     }
@@ -37,19 +38,10 @@ export class CourseSectionService {
     async create(
         createCourseSectionData: CreateCourseSectionType,
     ): Promise<CourseSection> {
-        const courseSection = new CourseSection();
-        courseSection.name = createCourseSectionData.name;
-        courseSection.sortNumber = createCourseSectionData.sortNumber;
+        const courseSection = new CourseSection(createCourseSectionData);
         if (createCourseSectionData.materials)
             courseSection.materials = createCourseSectionData.materials.map(
-                value => {
-                    let material = new SectionMaterial();
-                    material.name = value.name;
-                    material.sortNumber = value.sortNumber;
-                    material.type = value.type;
-                    material.url = value.url;
-                    return material;
-                },
+                value => new SectionMaterial(value),
             );
         return courseSection;
     }

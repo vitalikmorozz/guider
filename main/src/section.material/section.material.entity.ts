@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { ObjectType, Field, registerEnumType } from '@nestjs/graphql';
 import { CourseSection } from 'src/course.section/course.section.entity';
+import { CreateSectionMaterialType } from './input.types/create.section.material';
 
 export enum AllowedTypes {
     'video',
@@ -20,6 +21,14 @@ registerEnumType(AllowedTypes, {
 @Entity()
 @ObjectType()
 export class SectionMaterial {
+    constructor(material?: CreateSectionMaterialType) {
+        if (material) {
+            this.name = material.name;
+            this.sortNumber = material.sortNumber;
+            this.type = material.type;
+            this.url = material.url;
+        }
+    }
     @Field()
     @PrimaryGeneratedColumn()
     id: number;

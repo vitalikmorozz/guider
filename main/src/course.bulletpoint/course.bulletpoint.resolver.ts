@@ -63,6 +63,7 @@ export class CourseBulletPointResolver {
         );
     }
 
+    @UseGuards(GqlAuthGuard)
     @Mutation(() => CourseBulletPoint, { name: 'deleteCourseBulletPoint' })
     async deleteOne(@Args('id') id: number) {
         return this.courseBulletPointService.deleteOne(id);

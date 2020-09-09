@@ -30,4 +30,6 @@ export class UpdateUserInput {
     createdCourses: Course[];
 
     wishlist: Course[];
+
+    purchasedCourses: Course[];
 }

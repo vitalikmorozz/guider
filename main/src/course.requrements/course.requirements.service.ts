@@ -30,9 +30,9 @@ export class CourseRequirementService {
     async create(
         createCourseRequirementData: CreateCourseRequirementType,
     ): Promise<CourseRequirement> {
-        const courseRequirement = new CourseRequirement();
-        courseRequirement.description = createCourseRequirementData.description;
-        courseRequirement.sortNumber = createCourseRequirementData.sortNumber;
+        const courseRequirement = new CourseRequirement(
+            createCourseRequirementData,
+        );
         return courseRequirement;
     }
 

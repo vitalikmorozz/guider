@@ -30,9 +30,7 @@ export class CourseBulletPointService {
     async create(
         createBulletPointData: CreateBulletPointType,
     ): Promise<CourseBulletPoint> {
-        const courseBulletPoint = new CourseBulletPoint();
-        courseBulletPoint.description = createBulletPointData.description;
-        courseBulletPoint.sortNumber = createBulletPointData.sortNumber;
+        const courseBulletPoint = new CourseBulletPoint(createBulletPointData);
         return courseBulletPoint;
     }
 
