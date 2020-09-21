@@ -134,6 +134,7 @@ type Mutation {
   updateCourseBulletPoint(id: Float!, updateBulletTypeData: UpdateBulletPointType!): CourseBulletPoint!
   updateCourseRequirement(id: Float!, updateCourseRequirementData: UpdateCourseRequirementType!): CourseRequirement!
   updateCourseSection(id: Float!, updateCourseSectionData: UpdateCourseSectionType!): CourseSection!
+  updateMe(updateUserData: UpdateUserInput!): User!
   updateSectionMaterial(id: Float!, updateSectionMaterialData: UpdateSectionMaterialType!): SectionMaterial!
   updateUser(id: Float!, updateUserData: UpdateUserInput!): User!
   wishlistCourse(courseId: Float!): User!

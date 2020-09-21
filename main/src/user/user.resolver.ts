@@ -4,7 +4,7 @@ import { User } from './user.entity';
 import { CreateUserInput } from './input.types/create.user.input';
 import { UpdateUserInput } from './input.types/update.user.input';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { hashSync } from 'bcrypt';
 import { GqlAuthGuard } from 'src/auth/gql-jwt-auth.guard';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 
@@ -40,6 +40,17 @@ export class UserResolver {
         @Args('updateUserData') updateUserData: UpdateUserInput,
     ) {
         return this.userService.updateOne(id, updateUserData);
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => User, { name: 'updateMe' })
+    async updateMe(
+        @CurrentUser() user: User,
+        @Args('updateUserData') updateUserData: UpdateUserInput,
+    ) {
+        if (updateUserData.password)
+            updateUserData.password = hashSync(updateUserData.password, 10);
+        return this.userService.updateOne(user.id, updateUserData);
     }
 
     @Mutation(() => User, { name: 'deleteUser' })
