@@ -7,8 +7,8 @@ import {
     BiLogOut,
     BiWrench,
     BiHeart,
-    BiUser,
 } from "react-icons/bi";
+import { FaUserCog } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../context/Auth";
@@ -71,7 +71,7 @@ const Nav = () => {
         authLinks = [
             {
                 title: "Profile",
-                icon: <BiUser />,
+                icon: <FaUserCog />,
                 path: "/profile",
             },
 

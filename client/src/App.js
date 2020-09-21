@@ -11,6 +11,8 @@ import LogIn from "./pages/LogIn";
 import SignIn from "./pages/SignIn";
 import LogOut from "./pages/LogOut";
 import OnlyUnauthorizedRoute from "./components/OnlyUnauthorizedRoute";
+import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
 
 const AppContainer = styled.div`
     display: flex;
@@ -46,6 +48,12 @@ function App() {
                         </ProtectedRoute>
                         <ProtectedRoute exact path="/courses/wishlist">
                             My Wishlist page
+                        </ProtectedRoute>
+                        <ProtectedRoute exact path="/profile">
+                            <Profile />
+                        </ProtectedRoute>
+                        <ProtectedRoute exact path="/profile/edit">
+                            <EditProfile />
                         </ProtectedRoute>
                         <OnlyUnauthorizedRoute exact path="/login">
                             <LogIn />
