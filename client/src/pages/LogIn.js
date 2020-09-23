@@ -14,7 +14,7 @@ import { Title } from "../ui/Text";
 import { useAuth } from "../context/Auth";
 import useAlert from "../useAlert";
 
-const MarginContainer = styled.p`
+const MarginContainer = styled.div`
     margin-top: 25px;
 `;
 
@@ -34,7 +34,6 @@ const LogIn = () => {
     const [login] = useMutation(LOG_IN, {
         onCompleted: (data) => {
             loginAsUser(data.login.access_token);
-            setDisabled(false);
             history.push("/");
         },
         onError: (err) => {

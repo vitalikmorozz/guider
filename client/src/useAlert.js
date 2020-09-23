@@ -13,8 +13,8 @@ const useAlert = () => {
 
     useEffect(() => {
         setAlerts(
-            alertMessages.map((msg) => (
-                <AlertContainer>
+            alertMessages.map((msg, indx) => (
+                <AlertContainer key={indx}>
                     <Alert severity={type}>{msg}</Alert>
                 </AlertContainer>
             ))
